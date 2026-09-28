@@ -43,6 +43,7 @@
     "@nuxt/kit": "^4.5.2",
     "@editx/image-editor": "0.1.0-alpha.6",
     "@vueuse/core": "^15.0.0",
+    "konva": "^10.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

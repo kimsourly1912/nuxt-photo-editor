@@ -91,7 +91,8 @@ async function mountEditor() {
       onClose: () => closeEditor(),
     })
   }
-  catch {
+  catch (cause) {
+    console.error('[PhotoUploadEditor] Failed to mount Editx', cause)
     flow.error.value = 'The editor could not be loaded. Please try again.'
   }
 }
