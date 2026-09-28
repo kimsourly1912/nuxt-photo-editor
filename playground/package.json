@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "nuxt-photo-editor-playground",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@kimsourly1912/nuxt-photo-editor": "file:..",
+    "nuxt": "^4.5.2"
+  }
+}

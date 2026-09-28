@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "@editx/image-editor/styles.css";
+@source "../../../node_modules/@editx/image-editor/dist";
