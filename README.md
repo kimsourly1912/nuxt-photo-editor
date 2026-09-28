@@ -28,9 +28,10 @@ Editx renders utility classes at runtime. In your Tailwind v4 stylesheet, import
 @import "@nuxt/ui";
 @import "@editx/image-editor/styles.css";
 @source "../../../node_modules/@editx/image-editor/dist";
+@source "../../../node_modules/@kimsourly1912/nuxt-photo-editor/dist/runtime";
 ```
 
-For monorepos or nonstandard `node_modules` layouts, point `@source` at the installed Editx `dist` folder. The editor may render without its controls styled if Tailwind does not scan that folder.
+The component layout uses Tailwind utilities and Nuxt UI theme colors, with no component stylesheet. For monorepos or nonstandard `node_modules` layouts, point both `@source` directives at their installed package folders. Tailwind ignores `node_modules` by default, so these paths are required for the editor controls and component layout to receive their styles.
 
 ## Use in a form
 

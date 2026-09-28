@@ -193,22 +193,22 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="photo-upload-editor">
-    <div class="photo-upload-editor__heading">
-      <span class="photo-upload-editor__label">{{ label }}</span>
-      <span class="photo-upload-editor__hint">JPEG, PNG or WebP · up to {{ Math.round(maxInputBytes / 1024 / 1024) }} MB</span>
+  <div>
+    <div class="mb-2 flex flex-wrap justify-between gap-x-4 gap-y-1">
+      <span class="font-semibold">{{ label }}</span>
+      <span class="text-sm text-muted">JPEG, PNG or WebP · up to {{ Math.round(maxInputBytes / 1024 / 1024) }} MB</span>
     </div>
 
     <div
       v-if="modelValue"
-      class="photo-upload-editor__current"
+      class="grid gap-3"
     >
       <img
         :src="modelValue.url"
         :alt="label"
-        class="photo-upload-editor__image"
+        class="block max-h-56 w-full max-w-72 rounded-xl object-cover"
       >
-      <div class="photo-upload-editor__actions">
+      <div class="flex flex-wrap items-center gap-2">
         <UButton
           label="Edit"
           variant="soft"
@@ -246,7 +246,7 @@ onBeforeUnmount(() => {
     />
     <p
       v-if="flow.error.value && !open"
-      class="photo-upload-editor__error"
+      class="mt-2 text-error"
       role="alert"
     >
       {{ flow.error.value }}
@@ -255,21 +255,21 @@ onBeforeUnmount(() => {
     <UModal
       v-model:open="open"
       :dismissible="false"
-      :ui="{ content: 'photo-upload-editor__modal' }"
+      :ui="{ content: 'h-dvh w-screen max-w-none rounded-none sm:h-auto sm:w-[96vw] sm:max-w-[1100px] sm:rounded-lg' }"
     >
       <template #content>
-        <div class="photo-upload-editor__dialog">
+        <div class="max-h-dvh min-h-96 overflow-auto bg-default sm:max-h-[92dvh]">
           <div
             v-show="flow.stage.value === 'edit'"
             ref="editorElement"
-            class="photo-upload-editor__editor"
+            class="h-dvh min-h-0 sm:h-[min(78dvh,760px)] sm:min-h-96"
           />
           <div
             v-if="flow.error.value && flow.stage.value === 'edit'"
-            class="photo-upload-editor__edit-error"
+            class="flex items-center justify-between gap-4 px-4 py-2"
           >
             <p
-              class="photo-upload-editor__error"
+              class="mt-2 text-error"
               role="alert"
             >
               {{ flow.error.value }}
@@ -282,10 +282,16 @@ onBeforeUnmount(() => {
           </div>
           <div
             v-if="flow.stage.value === 'review' || flow.stage.value === 'uploading'"
-            class="photo-upload-editor__review"
+            class="grid min-h-dvh grid-cols-1 grid-rows-[auto_minmax(0,1fr)_auto_auto] items-center gap-4 p-5 sm:min-h-0 sm:grid-cols-[minmax(0,2fr)_minmax(12rem,1fr)] sm:grid-rows-none"
           >
-            <div class="photo-upload-editor__review-head">
-              <div><h2>Review photo</h2><p>Check the final crop before uploading.</p></div>
+            <div class="col-span-full flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-lg font-semibold">
+                  Review photo
+                </h2><p class="text-muted">
+                  Check the final crop before uploading.
+                </p>
+              </div>
               <UButton
                 label="Close"
                 variant="ghost"
@@ -297,11 +303,11 @@ onBeforeUnmount(() => {
               v-if="flow.previewUrl.value"
               :src="flow.previewUrl.value"
               alt="Edited photo preview"
-              class="photo-upload-editor__preview"
+              class="max-h-[min(52dvh,28rem)] w-full rounded-lg bg-elevated object-contain"
             >
             <p
               v-if="flow.prepared.value"
-              class="photo-upload-editor__facts"
+              class="text-sm text-muted"
             >
               {{ flow.prepared.value.width }} × {{ flow.prepared.value.height }} ·
               {{ flow.prepared.value.file.type.replace('image/', '').toUpperCase() }} ·
@@ -310,12 +316,12 @@ onBeforeUnmount(() => {
             </p>
             <p
               v-if="flow.error.value"
-              class="photo-upload-editor__error"
+              class="col-span-full mt-2 text-error"
               role="alert"
             >
               {{ flow.error.value }}
             </p>
-            <div class="photo-upload-editor__review-actions">
+            <div class="sticky bottom-0 col-span-full flex flex-wrap items-center justify-end gap-2 bg-default py-3 sm:static sm:py-0">
               <UButton
                 label="Edit again"
                 variant="outline"
@@ -360,31 +366,3 @@ onBeforeUnmount(() => {
     </UModal>
   </div>
 </template>
-
-<style>
-.photo-upload-editor__heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem 1rem; margin-bottom: .65rem; }
-.photo-upload-editor__label { font-weight: 600; }
-.photo-upload-editor__hint, .photo-upload-editor__facts { color: var(--ui-text-muted); font-size: .875rem; }
-.photo-upload-editor__current { display: grid; gap: .75rem; }
-.photo-upload-editor__image { display: block; width: min(100%, 18rem); max-height: 14rem; object-fit: cover; border-radius: .75rem; }
-.photo-upload-editor__actions, .photo-upload-editor__review-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
-.photo-upload-editor__error { color: var(--ui-error); margin-top: .5rem; }
-.photo-upload-editor__edit-error { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .5rem 1rem; }
-.photo-upload-editor__modal { width: min(96vw, 1100px) !important; max-width: none !important; }
-.photo-upload-editor__dialog { min-height: 24rem; max-height: 92dvh; overflow: auto; background: var(--ui-bg); }
-.photo-upload-editor__editor { height: min(78dvh, 760px); min-height: 25rem; }
-.photo-upload-editor__review { padding: 1.25rem; display: grid; grid-template-columns: minmax(0, 2fr) minmax(12rem, 1fr); align-items: center; gap: 1rem; }
-.photo-upload-editor__review-head, .photo-upload-editor__review-actions, .photo-upload-editor__review > .photo-upload-editor__error { grid-column: 1 / -1; }
-.photo-upload-editor__review-head { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
-.photo-upload-editor__review-head h2 { font-weight: 600; font-size: 1.125rem; }
-.photo-upload-editor__review-head p { color: var(--ui-text-muted); }
-.photo-upload-editor__preview { max-height: min(52dvh, 28rem); width: 100%; object-fit: contain; background: var(--ui-bg-muted); border-radius: .5rem; }
-.photo-upload-editor__review-actions { justify-content: flex-end; }
-@media (max-width: 640px) {
-  .photo-upload-editor__modal { width: 100vw !important; height: 100dvh !important; border-radius: 0 !important; }
-  .photo-upload-editor__dialog { height: 100dvh; max-height: 100dvh; }
-  .photo-upload-editor__editor { height: 100dvh; min-height: 0; }
-  .photo-upload-editor__review { min-height: 100dvh; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto auto; }
-  .photo-upload-editor__review-actions { position: sticky; bottom: 0; background: var(--ui-bg); padding: .75rem 0; }
-}
-</style>
